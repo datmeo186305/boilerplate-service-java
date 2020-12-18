@@ -1,0 +1,80 @@
+plugins {
+    id "java"
+    id "application"
+    id 'org.springframework.boot' version '2.3.6.RELEASE'
+    id "io.spring.dependency-management" version "1.0.10.RELEASE"
+}
+
+mainClassName = "com.benit.team.BenitTeamApplication"
+group = "com.benit.team"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "1.8"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+ext {
+    set("springCloudVersion", "Hoxton.SR9")
+    projectlombokVersion = "1.18.16"
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+    compile "org.springframework.cloud:spring-cloud-starter-config"
+    compile "org.springframework.cloud:spring-cloud-starter-sleuth"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard"
+    compile "org.springframework.cloud:spring-cloud-starter-openfeign"
+
+    compile "de.codecentric:spring-boot-admin-starter-client:2.3.1"
+
+    compileOnly "org.projectlombok:lombok:${projectlombokVersion}"
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.projectlombok:lombok:${projectlombokVersion}"
+
+    compileOnly "org.projectlombok:lombok:${projectlombokVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    manifest {
+        attributes('Build-Time': new Date().format("yyyy-MM-dd HH:mm:ssZ"),
+            'Built-On': InetAddress.getLocalHost().toString(),
+            'Built-By': System.getProperty('user.name'),
+            'Built-JDK': System.getProperty('java.version'),
+//            'Git-Url': gitUrl(),
+//            'Git-Branch': gitBranch(),
+//            'Git-Commit': gitHash(),
+        )
+
+    }
+    destinationDir(new File("target"))
+    manifest {
+        attributes 'Start-Class': mainClassName
+    }
+}

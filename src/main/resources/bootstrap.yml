@@ -1,0 +1,14 @@
+spring:
+   application:
+      name: team-service
+   cloud:
+      config:
+         uri: https://configuration-server.benit.io
+         username: benit
+         password: 123456a@
+
+management:
+   endpoints:
+      web:
+         exposure:
+            include: "*"
