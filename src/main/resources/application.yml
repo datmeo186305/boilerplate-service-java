@@ -2,21 +2,25 @@ server:
   port : 8081
 
 eureka:
-   client:
-      healthcheck:
-         enabled: true   
-         
+  client:
+    healthcheck:
+      enabled: true
 management:
-   endpoints:
-      web:
-         exposure:
-            include: "*"
-      health:
-         show-details: always
-      hystrix:
-         stream:
-            enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+    hystrix:
+      stream:
+        enabled: true
 
 hystrix:
-   dashboard:
-      proxy-stream-allow-list: "*"         
+  dashboard:
+    proxy-stream-allow-list: "*"
+
+spring:
+  jwt:
+    secret-key: 'secret_key_nay_dai_vua_du_256bit'
+    expired-time: 86400000 #ms

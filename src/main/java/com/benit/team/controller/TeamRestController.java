@@ -2,7 +2,7 @@ package com.benit.team.controller;
 
 import com.benit.team.dto.Team;
 import com.benit.team.dto.member.MemberDTO;
-import com.benit.team.service.MemberFeignService;
+import com.benit.team.clients.MemberFeignClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RefreshScope
-@RestController
+//@RestController
 public class TeamRestController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TeamRestController.class);
@@ -30,17 +31,17 @@ public class TeamRestController {
 	@Value("${text.greeting:Hello default }")
     private String message;
 	
-	@Autowired
-	private DiscoveryClient discoveryClient;
+//	@Autowired
+//	private DiscoveryClient discoveryClient;
 
 	@Autowired
 	private RestTemplate restTemplate;
 	
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
-	private MemberFeignService memberFeignService;
+	private MemberFeignClient memberFeignClient;
 	
 	@RequestMapping("/")
 	public String home() {
@@ -49,7 +50,8 @@ public class TeamRestController {
 	
 	@RequestMapping("/service-instances/{applicationName}")
 	public List<ServiceInstance> serviceInstancesByApplicationName(@PathVariable String applicationName) {
-		return this.discoveryClient.getInstances(applicationName);
+//		return this.discoveryClient.getInstances(applicationName);
+		return Collections.emptyList();
 	}
 	
 	@HystrixCommand
@@ -77,7 +79,7 @@ public class TeamRestController {
 	public List<MemberDTO> getListMemberByReign(@PathVariable final int id) {
 		LOGGER.info("Get members by reign service ... ");
 		
-		List<MemberDTO> members = memberFeignService.getNewMembers();
+		List<MemberDTO> members = memberFeignClient.getNewMembers();
 		
 		return members;
 	}

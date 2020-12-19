@@ -1,4 +1,4 @@
-package com.benit.team.service;
+package com.benit.team.clients;
 
 import com.benit.team.dto.member.MemberDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @FeignClient(value = "member-service")
-public interface MemberFeignService {
+public interface MemberFeignClient {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/list")
     List<MemberDTO> getListMember();
